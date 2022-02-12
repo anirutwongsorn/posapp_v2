@@ -1,3 +1,4 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -5,7 +6,6 @@ import 'package:posapp_v2/app_constants/app_color.dart';
 import 'package:posapp_v2/app_constants/app_constants.dart';
 import 'package:posapp_v2/app_constants/app_error_widgets.dart';
 import 'package:posapp_v2/app_constants/login_decoration.dart';
-import 'package:posapp_v2/app_global/global_error_alert.dart';
 import 'package:posapp_v2/provider/bloc/make_sale/make_sale_bloc.dart';
 import 'package:posapp_v2/provider/models/model_make_sale.dart';
 import 'package:posapp_v2/provider/services/service_network.dart';
@@ -23,7 +23,7 @@ class _MakeSalePageState extends State<MakeSalePage> {
   final DateFormat _ddMMyy = new DateFormat('dd/MM/yyyy HH:mm');
   final NumberFormat _numberFormat = new NumberFormat('#,###');
 
-  String dbname = "", branch = "";
+  String dbname = "", branch = "", _dateSave = '';
 
   final _formKey = GlobalKey<FormState>();
   final _money = TextEditingController();
@@ -52,14 +52,16 @@ class _MakeSalePageState extends State<MakeSalePage> {
 
   void _saveChange() {
     if (_formKey.currentState!.validate()) {
+      print(_date.value.toString());
+      print(_dateSave.replaceAll('-', ''));
+      //return;
       _makeSaleModel = MakeSale(
-          billDate: _date.value.text.toString(),
+          billDate: _dateSave.replaceAll('-', ''),
           makeSale: double.tryParse(_money.value.text),
           actualSale: 0,
           isActive: false,
           lastActivity: DateTime.now());
       _makeSaleBloc.add(PostMakeSale(model: _makeSaleModel, dbname: dbname));
-      print(_makeSaleModel);
     }
   }
 
@@ -139,17 +141,27 @@ class _MakeSalePageState extends State<MakeSalePage> {
                   'บันทึกยอดขาย',
                   style: buildAppTextStyle(color: PRIMARY_COLOR, fontSize: 18),
                 ),
-                TextFormField(
-                  keyboardType: TextInputType.datetime,
-                  controller: _date,
-                  maxLength: 20,
-                  validator: (val) {
-                    if (val!.isEmpty) {
-                      return 'วันที่';
-                    }
-                    return null;
-                  },
-                  decoration: buildLoginDecorationNoIcon(hintText: 'วันที่'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DateTimePicker(
+                    type: DateTimePickerType.date,
+                    dateMask: 'yyyy/MM/dd',
+                    controller: _date,
+                    //initialValue: _initialValue,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100),
+                    //icon: Icon(Icons.event),
+                    dateLabelText: 'วันที่',
+                    //locale: Locale('pt', 'BR'),
+                    onChanged: (val) => _dateSave = val,
+                    validator: (val) {
+                      if (val!.isEmpty) {
+                        return 'วันที่';
+                      }
+                      return null;
+                    },
+                    onSaved: (val) => _dateSave = val!,
+                  ),
                 ),
                 SizedBox(height: 16),
                 TextFormField(
@@ -205,8 +217,8 @@ class _MakeSalePageState extends State<MakeSalePage> {
       decoration: buildBlackDecoration(),
       child: ListView.separated(
         padding: EdgeInsets.only(top: 8, bottom: 100),
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        // shrinkWrap: true,
+        // physics: NeverScrollableScrollPhysics(),
         itemCount: model.length,
         itemBuilder: (context, index) {
           var _dt = model[index].billDate!;

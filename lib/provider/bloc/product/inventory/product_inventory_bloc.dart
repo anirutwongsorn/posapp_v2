@@ -25,6 +25,8 @@ class ProductInventoryBloc
 
     on<SetInventoryReset>((event, emit) => _setInventoryReset(event, emit));
 
+    on<ResetInventory>((event, emit) => emit(ProductInventoryInitial()));
+
     // on<ProductInventoryEvent>((event, emit) {
     //   // TODO: implement event handler
     //

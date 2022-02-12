@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posapp_v2/app_constants/app_color.dart';
 import 'package:posapp_v2/app_constants/app_constants.dart';
+import 'package:posapp_v2/app_constants/app_error_widgets.dart';
 import 'package:posapp_v2/provider/bloc/member/member_bloc.dart';
 import 'package:posapp_v2/provider/bloc/report/employee/daily_employee_bloc.dart';
 import 'package:posapp_v2/provider/models/model_work_order_main.dart';
@@ -38,9 +39,10 @@ class _DailySaleEmployeePageState extends State<DailySaleEmployeePage>
   }
 
   Future _handleRefresh() async {
-    await Future.delayed(Duration(
-      seconds: 2,
-    ));
+    // await Future.delayed(Duration(
+    //   seconds: 2,
+    // ));
+    await getDatabaseName();
     _employeeBloc!.add(GetDailyEmployee(dbName: dbname));
   }
 
@@ -84,11 +86,8 @@ class _DailySaleEmployeePageState extends State<DailySaleEmployeePage>
         }
 
         if (state is DailyEmployeeError) {
-          return Center(
-            child: Text(
-              state.errMsg,
-              style: TextStyle(color: Colors.red),
-            ),
+          return AppErrorPage(
+            callBack: _handleRefresh,
           );
         }
 

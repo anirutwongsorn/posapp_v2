@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posapp_v2/app_constants/app_color.dart';
 import 'package:posapp_v2/app_constants/app_constants.dart';
+import 'package:posapp_v2/app_constants/app_error_widgets.dart';
 import 'package:posapp_v2/app_global/global_variable.dart';
 import 'package:posapp_v2/pages/auth/LoginPage.dart';
 import 'package:posapp_v2/provider/bloc/login/login_bloc.dart';
@@ -44,6 +45,7 @@ class _MemberPageState extends State<MemberPage> {
   Future<void> changedDB(
       {required String dbname, required String branch}) async {
     _memberBloc.add(SetChangedBranch(dbname: dbname, branch: branch));
+    print('dbname: $dbname');
     getInitDB();
   }
 
@@ -87,7 +89,7 @@ class _MemberPageState extends State<MemberPage> {
     );
   }
 
-  _buildLoadMember() {
+  Widget _buildLoadMember() {
     return BlocListener(
       bloc: _loginBloc,
       listener: (context, state) {
@@ -113,13 +115,13 @@ class _MemberPageState extends State<MemberPage> {
             return _buildMainUI(model: model);
           }
 
-          return buildEmptySection(errMsg: 'ไม่พบข้อมูลที่ค้นหา');
+          return AppErrorPage(callBack: initState);
         },
       ),
     );
   }
 
-  _buildMainUI({required List<MemberModel> model}) {
+  Widget _buildMainUI({required List<MemberModel> model}) {
     return Container(
       decoration: buildGradientColor(borderR: 0),
       child: SafeArea(

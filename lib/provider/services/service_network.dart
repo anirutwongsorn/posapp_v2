@@ -47,12 +47,12 @@ class NetworkService {
 
   Future<void> setBranch(
       {required String initDB, required String branch}) async {
-    print('initDB :$initDB, branch: $branch');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove(GlobalVariable.dbName);
     await prefs.remove(GlobalVariable.branch);
     await prefs.setString(GlobalVariable.dbName, initDB);
     await prefs.setString(GlobalVariable.branch, branch);
+    print('initDB :$initDB, branch: $branch');
   }
 
   Future<List<DailySummary>> getDailySummary({required String dbname}) async {

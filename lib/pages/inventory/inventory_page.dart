@@ -60,9 +60,10 @@ class _InventoryPageState extends State<InventoryPage>
   }
 
   Future _handleRefresh() async {
-    await Future.delayed(Duration(
-      seconds: 2,
-    ));
+    // await Future.delayed(Duration(
+    //   seconds: 2,
+    // ));
+    await getDatabaseName();
     _inventoryBloc!.add(GetInventory(dbname: dbname));
     branch = await NetworkService().getBranch();
   }
@@ -111,6 +112,20 @@ class _InventoryPageState extends State<InventoryPage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              BlocBuilder<ProductInventoryBloc, ProductInventoryState>(
+                builder: (context, state) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      branch == "" ? _memberBloc!.branch : branch,
+                      style: buildAppTextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  );
+                },
+              ),
               SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

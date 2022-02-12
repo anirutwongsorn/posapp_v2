@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posapp_v2/app_constants/app_color.dart';
 import 'package:posapp_v2/app_constants/app_constants.dart';
+import 'package:posapp_v2/app_constants/app_error_widgets.dart';
 import 'package:posapp_v2/pages/auth/LoginPage.dart';
 import 'package:posapp_v2/pages/make_sale/make_sale_page.dart';
 import 'package:posapp_v2/pages/report/chart_component.dart';
@@ -29,9 +30,10 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
   String dbname = "", branch = "";
 
   Future _handleRefresh() async {
-    await Future.delayed(Duration(
-      seconds: 2,
-    ));
+    // await Future.delayed(Duration(
+    //   seconds: 2,
+    // ));
+    await _getDatabaseName();
     _dailySaleRptBloc!.add(GetDailySaleReport(dbName: this.dbname));
   }
 
@@ -70,7 +72,15 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
     // _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body: Center(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [PRIMARY_COLOR, SOFT_BLUE],
+            stops: [0.3, 0.95],
+          ),
+        ),
         child: _buildLoadReportFromServer(),
       ),
       floatingActionButton: FloatingActionButton(
@@ -112,7 +122,7 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
             );
           }
 
-          return buildEmptySection(errMsg: 'ไม่พบข้อมูล');
+          return AppErrorPage(callBack: _handleRefresh);
         },
       ),
     );
@@ -120,14 +130,6 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
 
   _buildSaleRptWidgets({required List<DailySaleRptModel> model}) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [PRIMARY_COLOR, SOFT_BLUE],
-          stops: [0.3, 0.95],
-        ),
-      ),
       child: RefreshIndicator(
         onRefresh: _handleRefresh,
         child: ListView(
@@ -135,12 +137,6 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
           children: [
             _buildHeaderSection(model: model),
             SizedBox(height: 8),
-            // Container(
-            //   padding: EdgeInsets.only(top: 12, left: 22, right: 22),
-            //   decoration: buildBlackDecoration(),
-            //   child: LineChartSample5(model: model),
-            // ),
-            // SizedBox(height: 8),
             _buildListView(model: model),
           ],
         ),

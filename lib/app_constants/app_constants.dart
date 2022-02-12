@@ -51,22 +51,22 @@ Column buildLogoLoading() {
   );
 }
 
-Column buildEmptySection({required String errMsg}) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      buildAppLogo(),
-      Padding(
-        padding: const EdgeInsets.only(top: 90),
-        child: Text(
-          errMsg,
-          style: buildAppTextStyle(fontSize: 16),
-        ),
-      ),
-    ],
-  );
-}
+// Column buildEmptySection({required String errMsg}) {
+//   return Column(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     mainAxisSize: MainAxisSize.min,
+//     children: [
+//       buildAppLogo(),
+//       Padding(
+//         padding: const EdgeInsets.only(top: 90),
+//         child: Text(
+//           errMsg,
+//           style: buildAppTextStyle(fontSize: 16),
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
 buildBlackDecoration() {
   return BoxDecoration(

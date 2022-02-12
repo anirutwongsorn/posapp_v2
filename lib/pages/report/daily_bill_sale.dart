@@ -54,9 +54,10 @@ class _DailyBillMainPageState extends State<DailyBillMainPage>
   }
 
   Future _handleRefresh() async {
-    await Future.delayed(Duration(
-      seconds: 2,
-    ));
+    // await Future.delayed(Duration(
+    //   seconds: 2,
+    // ));
+    await getDatabaseName();
     _billMainBloc!.add(GetDailyBillMain(dbName: dbname));
   }
 
