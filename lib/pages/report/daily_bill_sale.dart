@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posapp_v2/app_constants/app_color.dart';
 import 'package:posapp_v2/app_constants/app_constants.dart';
+import 'package:posapp_v2/app_global/global_error_alert.dart';
 import 'package:posapp_v2/pages/auth/LoginPage.dart';
 import 'package:posapp_v2/pages/report/daily_bill_sale_details.dart';
 import 'package:posapp_v2/provider/bloc/login/login_bloc.dart';
@@ -100,12 +101,7 @@ class _DailyBillMainPageState extends State<DailyBillMainPage>
         }
 
         if (state is DailyBillMainLoadError) {
-          return Center(
-            child: Text(
-              state.errMsg,
-              style: TextStyle(color: Colors.red),
-            ),
-          );
+          return _showDialog();
         }
 
         return Center(
@@ -231,6 +227,16 @@ class _DailyBillMainPageState extends State<DailyBillMainPage>
           style: TextStyle(color: color, fontSize: txtSize),
         ),
       ],
+    );
+  }
+
+  _showDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) => ErrorAlertDialog(
+        title: 'ผิดพลาด',
+        content: 'โหลดข้อมูลผิดพลาด',
+      ),
     );
   }
 }

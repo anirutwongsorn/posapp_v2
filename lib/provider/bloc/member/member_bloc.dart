@@ -24,6 +24,13 @@ class MemberBloc extends Bloc<MemberEvent, MemberState> {
     on<SetChangedBranch>((event, emit) async {
       await _setChangedBranch(event, emit);
     });
+
+    on<ResetMemberState>((event, emit) {
+      initDB = "";
+      branch = "";
+      memberModel = [];
+      emit(MemberInitial());
+    });
   }
 
   Future<void> _setChangedBranch(SetChangedBranch event, Emitter emit) async {

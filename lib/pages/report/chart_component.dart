@@ -157,7 +157,7 @@ class _LineChartSample5State extends State<LineChartSample5> {
                 getTextStyles: (context, fontSize) {
                   return TextStyle(
                     color: Colors.white,
-                    fontSize: 10,
+                    fontSize: 8,
                   );
                 },
               ),

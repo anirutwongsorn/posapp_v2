@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posapp_v2/app_constants/app_color.dart';
 import 'package:posapp_v2/app_constants/app_constants.dart';
 import 'package:posapp_v2/pages/auth/LoginPage.dart';
+import 'package:posapp_v2/pages/make_sale/make_sale_page.dart';
 import 'package:posapp_v2/pages/report/chart_component.dart';
 import 'package:posapp_v2/provider/bloc/login/login_bloc.dart';
 import 'package:posapp_v2/provider/bloc/member/member_bloc.dart';
@@ -34,7 +35,7 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
     _dailySaleRptBloc!.add(GetDailySaleReport(dbName: this.dbname));
   }
 
-  Future<void> getDatabaseName() async {
+  Future<void> _getDatabaseName() async {
     dbname = await NetworkService().getInitDB();
     branch = await NetworkService().getBranch();
     print('dbname :$dbname');
@@ -55,7 +56,7 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
       _memberBLOC!.add(GetMember());
     }
 
-    getDatabaseName();
+    _getDatabaseName();
     super.initState();
   }
 
@@ -71,6 +72,18 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
     return Scaffold(
       body: Center(
         child: _buildLoadReportFromServer(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          // Add your onPressed code here!
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MakeSalePage(),
+            ),
+          );
+        },
       ),
     );
   }
@@ -122,12 +135,12 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
           children: [
             _buildHeaderSection(model: model),
             SizedBox(height: 8),
-            Container(
-              padding: EdgeInsets.only(top: 12, left: 22, right: 22),
-              decoration: buildBlackDecoration(),
-              child: LineChartSample5(model: model),
-            ),
-            SizedBox(height: 8),
+            // Container(
+            //   padding: EdgeInsets.only(top: 12, left: 22, right: 22),
+            //   decoration: buildBlackDecoration(),
+            //   child: LineChartSample5(model: model),
+            // ),
+            // SizedBox(height: 8),
             _buildListView(model: model),
           ],
         ),
@@ -184,6 +197,7 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
     return Container(
       decoration: buildBlackDecoration(),
       child: ListView.separated(
+        padding: EdgeInsets.only(top: 8),
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemCount: model.length,
@@ -205,7 +219,7 @@ class _DailySaleReportPageState extends State<DailySaleReportPage>
                   children: [
                     Text(
                       model[index].billDt,
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                     Text(
                       model[index].amtChanged,

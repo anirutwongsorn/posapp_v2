@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:posapp_v2/app_constants/app_color.dart';
 import 'package:posapp_v2/pages/inventory/inventory_page.dart';
-import 'package:posapp_v2/pages/member__details_page.dart';
+import 'package:posapp_v2/pages/member_details_page.dart';
 import 'package:posapp_v2/pages/report/daily_bill_sale.dart';
 import 'package:posapp_v2/pages/report/daily_employee_sale.dart';
 import 'package:posapp_v2/pages/report/daily_summary_sale.dart';

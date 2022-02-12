@@ -148,7 +148,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                   decoration:
-                  buildLoginDecorationNoIcon(hintText: 'ชื่อเข้าใช้งาน'),
+                      buildLoginDecorationNoIcon(hintText: 'ชื่อเข้าใช้งาน'),
                 ),
                 SizedBox(height: 12),
                 TextFormField(
@@ -176,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                   decoration:
-                  buildLoginDecorationNoIcon(hintText: 'ชื่อร้านค้า'),
+                      buildLoginDecorationNoIcon(hintText: 'ชื่อร้านค้า'),
                 ),
                 SizedBox(height: 12),
                 TextFormField(
@@ -204,7 +204,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                   decoration:
-                  buildLoginDecorationNoIcon(hintText: 'รหัสข้อมูล'),
+                      buildLoginDecorationNoIcon(hintText: 'รหัสข้อมูล'),
                 ),
                 SizedBox(height: 20),
                 _buildRegisterButton(),
@@ -226,7 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
           },
           child: Container(
             padding:
-            EdgeInsets.only(left: 22.0, right: 22.0, top: 8, bottom: 8),
+                EdgeInsets.only(left: 22.0, right: 22.0, top: 8, bottom: 8),
             decoration: buildGradientColor(
                 borderR: 12,
                 color1: SOFT_ORANGE.withOpacity(.7),

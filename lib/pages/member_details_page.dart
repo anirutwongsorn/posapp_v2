@@ -20,15 +20,15 @@ class MemberPage extends StatefulWidget {
 }
 
 class _MemberPageState extends State<MemberPage> {
-  MemberBloc? _memberBloc;
+  late MemberBloc _memberBloc;
 
-  LoginBloc? _loginBloc;
+  late LoginBloc _loginBloc;
 
-  DailyBillMainBloc? _billMainBloc;
+  late DailyBillMainBloc _billMainBloc;
 
-  ProductInventoryBloc? _inventoryBloc;
+  late ProductInventoryBloc _inventoryBloc;
 
-  DailySaleRptBloc? _dailySaleRptBloc;
+  late DailySaleRptBloc _dailySaleRptBloc;
 
   double _width = 0;
 
@@ -36,14 +36,14 @@ class _MemberPageState extends State<MemberPage> {
 
   Future<void> getInitDB() async {
     _memberBloc = BlocProvider.of<MemberBloc>(context);
-    if (_memberBloc!.state is! MemberLoadSuccess) {
-      _memberBloc!.add(GetMember());
+    if (_memberBloc.state is! MemberLoadSuccess) {
+      _memberBloc.add(GetMember());
     }
   }
 
   Future<void> changedDB(
       {required String dbname, required String branch}) async {
-    _memberBloc!.add(SetChangedBranch(dbname: dbname, branch: branch));
+    _memberBloc.add(SetChangedBranch(dbname: dbname, branch: branch));
     getInitDB();
   }
 
@@ -54,20 +54,20 @@ class _MemberPageState extends State<MemberPage> {
     prefs.remove(GlobalVariable.dbName);
     prefs.remove(GlobalVariable.branch);
 
-    _billMainBloc!.add(ResetBillMainState());
+    _billMainBloc.add(ResetBillMainState());
 
-    _inventoryBloc!.add(ResetInventory());
+    _inventoryBloc.add(ResetInventory());
 
-    _dailySaleRptBloc!.add(ResetDailySaleState());
-    _memberBloc!.add(ResetMemberState());
+    _dailySaleRptBloc.add(ResetDailySaleState());
+    _memberBloc.add(ResetMemberState());
 
-    _loginBloc!.add(CheckLogin());
+    _loginBloc.add(CheckLogin());
   }
 
   @override
   void initState() {
     _loginBloc = BlocProvider.of<LoginBloc>(context);
-    _loginBloc!.add(CheckLogin());
+    _loginBloc.add(CheckLogin());
 
     _memberBloc = BlocProvider.of<MemberBloc>(context);
 
@@ -160,7 +160,7 @@ class _MemberPageState extends State<MemberPage> {
                                 child: ListTile(
                                   leading: Icon(
                                     Icons.check_box,
-                                    color: _data.dbName == _memberBloc!.initDB
+                                    color: _data.dbName == _memberBloc.initDB
                                         ? DARK_GREEN
                                         : SOFT_GREY,
                                   ),
@@ -217,7 +217,7 @@ class _MemberPageState extends State<MemberPage> {
                         style: TextStyle(color: Colors.red),
                       ),
                       onPressed: () {
-                        showMyDialogLoading();
+                        _showMyDialogLoading();
                         postLoggedOut();
                       },
                     ),
@@ -231,7 +231,7 @@ class _MemberPageState extends State<MemberPage> {
     );
   }
 
-  Future<void> showMyDialogLoading() async {
+  _showMyDialogLoading() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!

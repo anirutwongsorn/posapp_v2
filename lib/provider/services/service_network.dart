@@ -6,6 +6,7 @@ import 'package:posapp_v2/provider/models/model_daily_sale_rpt.dart';
 import 'package:posapp_v2/provider/models/model_daily_summary.dart';
 import 'package:posapp_v2/provider/models/model_debtor_rpt.dart';
 import 'package:posapp_v2/provider/models/model_login.dart';
+import 'package:posapp_v2/provider/models/model_make_sale.dart';
 import 'package:posapp_v2/provider/models/model_member.dart';
 import 'package:posapp_v2/provider/models/model_product_Inventory.dart';
 import 'package:posapp_v2/provider/models/model_register.dart';
@@ -393,6 +394,64 @@ class NetworkService {
       }
     } catch (e) {
       throw e;
+    }
+  }
+
+  Future<List<MakeSale>> getMakeSale({required String dbname}) async {
+    var _url = GlobalVariable.SERVER_URL +
+        "api/manitexpert/get_make_sale?dbname=$dbname";
+    print(_url);
+    List<MakeSale> _db = [];
+    try {
+      var url = Uri.parse(_url);
+      var _token = await getAccessToken();
+      http.Response resp = await http.get(url,
+          headers: {HttpHeaders.authorizationHeader: "Bearer $_token"});
+      print('statusCode :${resp.statusCode}');
+      if (resp.statusCode == 200) {
+        var jsonRes = json.decode(resp.body);
+        List list = jsonRes['data'];
+        print(list);
+
+        _db = list.map((m) => MakeSale.fromJson(m)).toList();
+        return _db;
+      } else {
+        throw Exception('กรุณาลงชื่อเข้าสู่ระบบ');
+      }
+    } catch (e) {
+      print('error: ' + e.toString());
+      throw e.toString();
+    }
+  }
+
+  Future<void> postMakeSale(
+      {required MakeSale model, required String dbname}) async {
+    var _url = GlobalVariable.SERVER_URL +
+        "api/manitexpert/post_make_sale?dbname=$dbname";
+    print(_url);
+    try {
+      var url = Uri.parse(_url);
+      var _token = await getAccessToken();
+      var _body = {
+        "BILLDT": '${model.billDate}',
+        "ActSale": '0',
+        "MakeSale": '${model.makeSale}',
+        "ISACTV": 'false',
+        "LSACTV": DateTime.now().toString()
+      };
+      print(_body);
+      http.Response resp = await http.post(url,
+          body: _body,
+          headers: {HttpHeaders.authorizationHeader: "Bearer $_token"});
+      print('statusCode :${resp.statusCode}');
+      if (resp.statusCode == 200) {
+        print('Success');
+      } else {
+        throw Exception('กรุณาลงชื่อเข้าสู่ระบบ');
+      }
+    } catch (e) {
+      print('error: ' + e.toString());
+      throw e.toString();
     }
   }
 }

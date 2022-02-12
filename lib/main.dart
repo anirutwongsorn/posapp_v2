@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posapp_v2/pages/auth/LoginPage.dart';
 import 'package:posapp_v2/provider/bloc/bloc_observer.dart';
 import 'package:posapp_v2/provider/bloc/login/login_bloc.dart';
+import 'package:posapp_v2/provider/bloc/make_sale/make_sale_bloc.dart';
 import 'package:posapp_v2/provider/bloc/member/member_bloc.dart';
 import 'package:posapp_v2/provider/bloc/product/inventory/product_inventory_bloc.dart';
 import 'package:posapp_v2/provider/bloc/product/management/product_manager_bloc.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<ProductManagerBloc>(
             create: (context) => ProductManagerBloc()),
         BlocProvider<RegisterBloc>(create: (context) => RegisterBloc()),
+        BlocProvider<MakeSaleBloc>(create: (context) => MakeSaleBloc()),
       ],
       child: MaterialApp(
         title: 'MPOS',

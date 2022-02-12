@@ -93,32 +93,38 @@ class _InventoryPageState extends State<InventoryPage>
   }
 
   _buildMainUI() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [DARK_GREEN, LIGHT_GREEN],
-          stops: [0.3, 0.95],
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        new TextEditingController().clear();
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [DARK_GREEN, LIGHT_GREEN],
+            stops: [0.3, 0.95],
+          ),
         ),
-      ),
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: _width / 1.2,
-                  child: _buildTextFilter(),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            _buildLoadInventory(),
-          ],
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: _width / 1.2,
+                    child: _buildTextFilter(),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              _buildLoadInventory(),
+            ],
+          ),
         ),
       ),
     );

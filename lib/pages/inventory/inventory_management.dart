@@ -70,17 +70,21 @@ class _ProductManagerPageState extends State<ProductManagerPage> {
     _width = MediaQuery.of(context).size.width;
     _height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: SafeArea(
-        child: BlocListener<LoginBloc, LoginState>(
-          bloc: _loginBloc,
-          listener: (context, state) {
-            if (state is LoginLoggedOut) {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => LoginPage()),
-                  (Route<dynamic> route) => route is LoginPage);
-            }
+      body: BlocListener<LoginBloc, LoginState>(
+        bloc: _loginBloc,
+        listener: (context, state) {
+          if (state is LoginLoggedOut) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => LoginPage()),
+                (Route<dynamic> route) => route is LoginPage);
+          }
+        },
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            new TextEditingController().clear();
           },
           child: Stack(
             children: [
@@ -95,211 +99,222 @@ class _ProductManagerPageState extends State<ProductManagerPage> {
                     stops: [0.3, 0.95],
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Text(
-                          'แก้ไขข้อมูลสินค้า',
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      )
-                    ],
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            'แก้ไขข้อมูลสินค้า',
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: _height < 700 ? 70 : (_height / 11),
-                ),
-                child: Container(
-                  //height: _height / 3,
-                  width: _width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35.0),
-                      topRight: Radius.circular(35.0),
-                    ),
-                    color: Colors.white,
+              SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: _height < 700 ? 70 : (_height / 11),
                   ),
-                  child: BlocListener<ProductManagerBloc, ProductManagerState>(
-                    bloc: _productManagerBloc,
-                    listener: (context, state) {
-                      if (state is ProductManagerError) {
-                        showMyDialog(context, state.errMsg, false);
-                      }
-                    },
-                    child: BlocBuilder<ProductManagerBloc, ProductManagerState>(
+                  child: Container(
+                    //height: _height / 3,
+                    width: _width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(35.0),
+                        topRight: Radius.circular(35.0),
+                      ),
+                      color: Colors.white,
+                    ),
+                    child:
+                        BlocListener<ProductManagerBloc, ProductManagerState>(
                       bloc: _productManagerBloc,
-                      builder: (context, state) {
-                        if (state is ProductManagerInitial) {
-                          _isSave = false;
-                          return SingleChildScrollView(
-                            child: Container(
-                              padding:
-                                  EdgeInsets.only(top: 30, left: 10, right: 10),
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          _buildTxtLbl(lbl: "รหัสสินค้า"),
-                                          _buildTxtDesc(lbl: invModel!.pcd),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Container(
-                                        width: _width - 20,
-                                        child: Row(
+                      listener: (context, state) {
+                        if (state is ProductManagerError) {
+                          showMyDialog(context, state.errMsg, false);
+                        }
+                      },
+                      child:
+                          BlocBuilder<ProductManagerBloc, ProductManagerState>(
+                        bloc: _productManagerBloc,
+                        builder: (context, state) {
+                          if (state is ProductManagerInitial) {
+                            _isSave = false;
+                            return SingleChildScrollView(
+                              child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 30, left: 10, right: 10),
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Row(
                                           children: [
-                                            _buildTxtLbl(lbl: "รายละเอียด"),
-                                            Flexible(
-                                              child: _buildTxtDesc(
-                                                  lbl: invModel!.pdDesc),
-                                            )
-                                            //_buildTxtDesc(lbl: invModel.pdesc),
+                                            _buildTxtLbl(lbl: "รหัสสินค้า"),
+                                            _buildTxtDesc(lbl: invModel!.pcd),
                                           ],
                                         ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          _buildTxtLbl(lbl: "หน่วยนับ"),
-                                          _buildTxtDesc(lbl: invModel!.uom),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          _buildTxtLbl(lbl: "คงคลัง"),
-                                          _buildTxtDesc(
-                                              lbl: invModel!.invBalance),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      Container(
-                                        width: _width / 2,
-                                        child: Form(
-                                          key: _formKey,
-                                          child: TextFormField(
-                                            controller: _txtPrice,
-                                            //initialValue: invModel.price,
-                                            keyboardType: TextInputType.number,
-                                            style: TextStyle(fontSize: 20),
-                                            decoration: InputDecoration(
-                                              focusColor: BLACK_GREY,
-                                              //border: InputBorder.none,
-                                              hintText: 'ราคาสินค้า',
-                                              //labelText: invModel.price,
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                              contentPadding:
-                                                  const EdgeInsets.only(
-                                                      left: 14.0,
-                                                      bottom: 6.0,
-                                                      top: 8.0),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.red),
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
+                                        SizedBox(height: 10),
+                                        Container(
+                                          width: _width - 20,
+                                          child: Row(
+                                            children: [
+                                              _buildTxtLbl(lbl: "รายละเอียด"),
+                                              Flexible(
+                                                child: _buildTxtDesc(
+                                                    lbl: invModel!.pdDesc),
+                                              )
+                                              //_buildTxtDesc(lbl: invModel.pdesc),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            _buildTxtLbl(lbl: "หน่วยนับ"),
+                                            _buildTxtDesc(lbl: invModel!.uom),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            _buildTxtLbl(lbl: "คงคลัง"),
+                                            _buildTxtDesc(
+                                                lbl: invModel!.invBalance),
+                                          ],
+                                        ),
+                                        SizedBox(height: 10),
+                                        Container(
+                                          width: _width / 2,
+                                          child: Form(
+                                            key: _formKey,
+                                            child: TextFormField(
+                                              controller: _txtPrice,
+                                              //initialValue: invModel.price,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              style: TextStyle(fontSize: 20),
+                                              decoration: InputDecoration(
+                                                focusColor: BLACK_GREY,
+                                                //border: InputBorder.none,
+                                                hintText: 'ราคาสินค้า',
+                                                //labelText: invModel.price,
+                                                filled: true,
+                                                fillColor: Colors.white,
+                                                contentPadding:
+                                                    const EdgeInsets.only(
+                                                        left: 14.0,
+                                                        bottom: 6.0,
+                                                        top: 8.0),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.red),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                                enabledBorder:
+                                                    UnderlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.grey),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
                                               ),
-                                              enabledBorder:
-                                                  UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.grey),
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                              ),
+                                              validator: (val) {
+                                                if (val!.isEmpty) {
+                                                  return "กรุณาระบุราคา";
+                                                } else {
+                                                  return null;
+                                                }
+                                              },
                                             ),
-                                            validator: (val) {
-                                              if (val!.isEmpty) {
-                                                return "กรุณาระบุราคา";
-                                              } else {
-                                                return null;
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
+                                        Container(
+                                          width: _width / 2.5,
+                                          child: OutlinedButton(
+                                            onPressed: () {
+                                              if (_formKey.currentState!
+                                                  .validate()) {
+                                                price = _txtPrice.text;
+                                                invModel!.price = price;
+                                                print("POST_MANAGE_PRICE : " +
+                                                    dbname);
+                                                if (dbname.length > 0) {
+                                                  _productManagerBloc!.add(
+                                                    PostManagePrice(
+                                                        model: invModel!,
+                                                        dbName: dbname),
+                                                  );
+                                                }
                                               }
                                             },
+                                            child: Text(
+                                              'บันทึก',
+                                              style: TextStyle(
+                                                  color: PRIMARY_COLOR),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: 20),
-                                      Container(
-                                        width: _width / 2.5,
-                                        child: OutlinedButton(
-                                          onPressed: () {
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              price = _txtPrice.text;
-                                              invModel!.price = price;
-                                              print("POST_MANAGE_PRICE : " +
-                                                  dbname);
-                                              if (dbname.length > 0) {
-                                                _productManagerBloc!.add(
-                                                  PostManagePrice(
-                                                      model: invModel!,
-                                                      dbName: dbname),
-                                                );
-                                              }
-                                            }
-                                          },
-                                          child: Text(
-                                            'บันทึก',
-                                            style:
-                                                TextStyle(color: PRIMARY_COLOR),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
+                            );
+                          }
+
+                          _isSave = true;
+
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/checked.png',
+                                  height: 120,
+                                ),
+                                SizedBox(height: 20),
+                                Text(
+                                  'บันทึกสำเร็จ',
+                                  style: TextStyle(
+                                      fontSize: 20, color: DARK_GREEN),
+                                ),
+                                SizedBox(height: 20),
+                                Container(
+                                  width: _width / 2,
+                                  child: OutlinedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(
+                                      'ปิดหน้าต่างนี้',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           );
-                        }
-
-                        _isSave = true;
-
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/checked.png',
-                                height: 120,
-                              ),
-                              SizedBox(height: 20),
-                              Text(
-                                'บันทึกสำเร็จ',
-                                style:
-                                    TextStyle(fontSize: 20, color: DARK_GREEN),
-                              ),
-                              SizedBox(height: 20),
-                              Container(
-                                width: _width / 2,
-                                child: OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    'ปิดหน้าต่างนี้',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                        },
+                      ),
                     ),
                   ),
                 ),
